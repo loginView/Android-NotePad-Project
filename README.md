@@ -4,21 +4,21 @@
 
 ### 1.新建笔记和编辑笔记
 
-（1）在主界面点击红色矩形所示按钮，新建笔记并进入编辑界面
+(1)在主界面点击红色矩形所示按钮，新建笔记并进入编辑界面
 
 ![Alt Text](./运行结果截图/初始应用功能1.1.png)
 
-（2）进入笔记编辑界面后，可进行笔记编辑
+(2)进入笔记编辑界面后，可进行笔记编辑
 
 ![Alt Text](./运行结果截图/初始应用功能1.2.png)
 
 ### 2.编辑标题
 
-（1）在笔记编辑界面中点击菜单，显示的菜单条目中有“Edit title”
+(1)在笔记编辑界面中点击菜单，显示的菜单条目中有“Edit title”
 
 ![Alt Text](./运行结果截图/初始应用功能2.1.png)
 
-（2）点击“Edit title”，可编辑笔记标题
+(2)点击“Edit title”，可编辑笔记标题
 
 ![Alt Text](./运行结果截图/初始应用功能2.2.png)
 
@@ -30,13 +30,13 @@
 
 ## 二.拓展基本功能
 
-###（一）.笔记条目增加时间戳显示
+### （一）.笔记条目增加时间戳显示
 
-####1.功能要求
+#### 1.功能要求
 
 每个新建笔记都会保存新建时间并显示；在修改笔记后更新为修改时间
 
-####2.实现思路和技术实现
+#### 2.实现思路和技术实现
 
 (1)初始应用的笔记列表`item`只有一个标题，需要再添加一个`TextView`用来显示时间，布局使用 `LinearLayout`
 
@@ -76,7 +76,7 @@ private static final String[] PROJECTION = new String[] {
 };
 ```
 
-(3)笔记条目数据通过SimpleCursorAdapter装填，其中用到的dataColumns，viewIDs变量需要添加修改时间
+(3)笔记条目数据通过`SimpleCursorAdapter`装填，其中用到的`dataColumns`，`viewIDs`变量需要添加修改时间
 
 ```properties
 // The names of the cursor columns to display in the view, initialized to the title column
@@ -87,8 +87,8 @@ String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE ,  NotePad.Notes.COLUMN
 int[] viewIDs = { android.R.id.text1 , R.id.text1_time };
 ```
 
-(4)对显示的时间戳（now变量）进行转换，变成直观的时间格式
-在NotePadProvider中的insert方法和NoteEditor中的updateNote方法中对now变量进行转换，前者为创建笔记时产生的时间，后者为修改笔记时产生的时间。转换后用ContentValues的put方法将转换后的dateTime存入数据库
+(4)对显示的时间戳（`now`变量）进行转换，变成直观的时间格式
+在`NotePadProvider`中的`insert`方法和`NoteEditor`中的`updateNote`方法中对`now`变量进行转换，前者为创建笔记时产生的时间，后者为修改笔记时产生的时间。转换后用`ContentValues`的`put`方法将转换后的`dateTime`存入数据库
 
 -`NotePadProvider`中的`insert`方法
 
@@ -121,7 +121,7 @@ String dateTime = format.format(date);
 values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
 ```
 
-####3.实现效果界面截图
+#### 3.实现效果界面截图
 
 (1)创建笔记时显示创建时间
 
@@ -131,13 +131,13 @@ values.put(NotePad.Notes.COLUMN_NAME_MODIFICATION_DATE, dateTime);
 
 ![Alt Text](./运行结果截图/拓展基本功能1.2.png)
 
-###（二）.笔记查询功能（按标题查询）
+### （二）.笔记查询功能（按标题查询）
 
-####1.功能要求
+#### 1.功能要求
 
 点击搜索按钮，进行搜索界面。初始状态的搜索界面不显示笔记条目。在输入搜索内容或回删一部分搜索内容后，系统根据输入内容和笔记的标题进行字符串匹配，刷新符合要求的笔记显示在笔记列表上，后续如果回删搜索内容至为空后，显示所有的笔记
 
-####2.实现思路和技术实现
+#### 2.实现思路和技术实现
 
 (1)在应用主界面添加一个搜索按钮。在`list_options_menu.xml`中添加一个搜索的`item`，使用Android自带的搜索图标，显示状态为总是显示
 
@@ -242,10 +242,10 @@ public class NoteSearch extends ListActivity implements SearchView.OnQueryTextLi
 }
 ```
 
-*注意：
-A.`onListItemClick`方法是点击`NotesList`的`item`跳转到对应笔记编辑界面的方法，`NotesList`中有这个方法，搜索出来的笔记跳转原理与`NotesList`中笔记一样，所以可以直接从`NotesList`中复制过来直接使用。
+*注意：*
+*A.`onListItemClick`方法是点击`NotesList`的`item`跳转到对应笔记编辑界面的方法，`NotesList`中有这个方法，搜索出来的笔记跳转原理与`NotesList`中笔记一样，所以可以直接从`NotesList`中复制过来直接使用。
 B.使用`PROJECTION`，`Cursor`，`adapter`方法与时间显示的原理一致
-C.动态搜索的实现最主要的部分在`onQueryTextChange`方法中，在使用这个方法，要先为`SearchView`注册监听
+C.动态搜索的实现最主要的部分在`onQueryTextChange`方法中，在使用这个方法，要先为`SearchView`注册监听*
 
 ```properties
 SearchView searchview = (SearchView)findViewById(R.id.search_view);
@@ -253,13 +253,13 @@ SearchView searchview = (SearchView)findViewById(R.id.search_view);
 searchview.setOnQueryTextListener(NoteSearch.this);
 ```
 
-D.`onQueryTextChange`方法作用是，当`SearchView`中文本发生变化时，执行其中代码，搜索还有一个重要的部分就是要做到模糊匹配而不是严格匹配，可以使用数据库查询语句中的`LIKE`和`%`结合来实现，`newText`为输入搜索的内容
+*D.`onQueryTextChange`方法作用是，当`SearchView`中文本发生变化时，执行其中代码，搜索还有一个重要的部分就是要做到模糊匹配而不是严格匹配，可以使用数据库查询语句中的`LIKE`和`%`结合来实现，`newText`为输入搜索的内容*
 
 ```properties
 String[] selectionArgs = { "%"+newText+"%" };
 ```
 
-(4)在'AndroidManifest.xml'注册'NoteSearch'
+(4)在`AndroidManifest.xml`注册`NoteSearch`
 
 ```properties
 <activity
@@ -279,31 +279,31 @@ case R.id.menu_search:
     return true;
 ```
 
-####3.实现效果界面截图
+#### 3.实现效果界面截图
 
 (1)点击搜索按钮进行搜索界面
 
-![Alt Text](./运行结果截图/拓展基本功能2.1.1png)
-![Alt Text](./运行结果截图/拓展基本功能2.1.2png)
+![Alt Text](./运行结果截图/拓展基本功能2.1.1.png)
+![Alt Text](./运行结果截图/拓展基本功能2.1.2.png)
 
 (2)输入搜索内容，显示符合条件的笔记
 
-![Alt Text](./运行结果截图/拓展基本功能2.2png)
+![Alt Text](./运行结果截图/拓展基本功能2.2.png)
 
 (3)回删搜素内容至空时，显示所有的笔记
 
-![Alt Text](./运行结果截图/拓展基本功能2.3png)
+![Alt Text](./运行结果截图/拓展基本功能2.3.png)
 
 
 ## 三.拓展附加功能
 
-###（一）.UI美化
+### （一）.UI美化
 
-####1.功能要求
+#### 1.功能要求
 
 在笔记编辑时可以对其切换编辑界面的背景颜色，同时更换笔记列表中的该笔记颜色（和编辑界面背景颜色相同）
 
-####2.实现思路和技术实现
+#### 2.实现思路和技术实现
 
 (1)给`NotesList`换个主题，把暗黑风换成白亮风。在`AndroidManifest.xml`中`NotesList`的`Activity`中修改
 
@@ -338,7 +338,7 @@ public void onCreate(SQLiteDatabase db) {
 ```
 
 (4)在`NotePadProvider`类中对新增的颜色字段做相应处理，
-在static{}中添加
+在`static{}`中添加
 
 ```properties
 sNotesProjectionMap.put(
@@ -347,7 +347,7 @@ sNotesProjectionMap.put(
 }
 ```
 
-在insert方法中添加
+在`insert`方法中添加
 
 ```properties
 if (values.containsKey(NotePad.Notes.COLUMN_NAME_BACK_COLOR) == false) {
@@ -421,7 +421,7 @@ MyCursorAdapter adapter = new MyCursorAdapter(
 
 (7)此时运行会发现系统报错：2024-11-28 10:21:11.138 23752-23752 SQLiteLog               com.example.android.notepad          E  (1) `no such column`: color in "SELECT _id, title, modified, color FROM notes ORDER BY modified DESC"
 
-使用数据库版本升级的办法，将NotePadProvider类中的DATABASE_VERSION变量由2改成3
+使用**数据库版本升级**的办法，将NotePadProvider类中的DATABASE_VERSION变量由2改成3
 
 ```properties
 private static final int DATABASE_VERSION = 3;
@@ -627,34 +627,34 @@ case R.id.menu_color:
     break;
 ```
 
-####3.实现效果界面截图
+#### 3.实现效果界面截图
 
 (1)在笔记编辑时对其切换编辑界面的背景颜色
 
 -点击笔记进入编辑界面，在编辑界面中点击右上方的改变背景颜色按钮
 
-![Alt Text](./运行结果截图/拓展基本功能1.1.1png)
+![Alt Text](./运行结果截图/拓展附加功能1.1.1.png)
 
 -选择背景颜色
 
-![Alt Text](./运行结果截图/拓展基本功能1.1.2png)
+![Alt Text](./运行结果截图/拓展附加功能1.1.2.png)
 
 -修改背景颜色后的编辑页面和返回应用主页面后的笔记列表
 
-![Alt Text](./运行结果截图/拓展基本功能1.1.3.1png)
-![Alt Text](./运行结果截图/拓展基本功能1.1.3.2png)
+![Alt Text](./运行结果截图/拓展附加功能1.1.3.1.png)
+![Alt Text](./运行结果截图/拓展附加功能1.1.3.2.png)
 
 (2)更换背景颜色后的笔记列表
 
-![Alt Text](./运行结果截图/拓展基本功能1.2png)
+![Alt Text](./运行结果截图/拓展附加功能1.2.png)
 
-###（二）.笔记导出
+### （二）.笔记导出
 
-####1.功能要求
+#### 1.功能要求
 
 在笔记编辑界面点击右上角的菜单按钮，显示导出文件选项，点击后显示对话框，用户输入导入文件的名称后点击确定即可将指定笔记保存到本地
 
-####2.实现思路和技术实现
+#### 2.实现思路和技术实现
 
 (1)在编辑界面的菜单xml文件`editor_options_menu.xml`中添加导出文件的`item`
 
@@ -831,29 +831,29 @@ case R.id.menu_output:
     break;
 ```
 
-####3.实现效果界面截图
+#### 3.实现效果界面截图
 
 (1)在笔记编辑界面点击右上角的菜单按钮，显示导出文件选项，点击后显示对话框
 
-![Alt Text](./运行结果截图/拓展基本功能2.1png)
+![Alt Text](./运行结果截图/拓展附加功能2.1.png)
 
 (2)用户在对话框中输入导入文件的名称后点击OK，指定笔记被保存到本地
 
-![Alt Text](./运行结果截图/拓展基本功能2.2.1png)
-![Alt Text](./运行结果截图/拓展基本功能2.2.2png)
+![Alt Text](./运行结果截图/拓展附加功能2.2.1.png)
+![Alt Text](./运行结果截图/拓展附加功能2.2.2.png)
 
 (3)打开模拟器的文件管理器查看笔记是否被保存到本地
 
-![Alt Text](./运行结果截图/拓展基本功能2.3.1png)
-![Alt Text](./运行结果截图/拓展基本功能2.3.2png)
+![Alt Text](./运行结果截图/拓展附加功能2.3.1.png)
+![Alt Text](./运行结果截图/拓展附加功能2.3.2.png)
 
-###（三）.笔记排序
+### （三）.笔记排序
 
-####1.功能要求
+#### 1.功能要求
 
 在应用主界面点击排序按钮，便会显示三种排序方式：创建时间、修改时间、颜色。点击一种排序方式后，笔记列表依据选中的排序方式进行排序
 
-####2.实现思路和技术实现
+#### 2.实现思路和技术实现
 
 (1)在应用主界面的菜单xml文件`list_options_menu.xml`中添加排序图标的`item`
 
@@ -945,22 +945,22 @@ private String[] dataColumns = { NotePad.Notes.COLUMN_NAME_TITLE ,  NotePad.Note
 private int[] viewIDs = { android.R.id.text1 , R.id.text1_time };
 ```
 
-####3.实现效果界面截图
+#### 3.实现效果界面截图
 
 (1)在应用主界面点击排序按钮，便会显示三种排序方式
 
-![Alt Text](./运行结果截图/拓展基本功能3.1png)
+![Alt Text](./运行结果截图/拓展附加功能3.1.png)
 
 (2)点击一种排序方式后，笔记列表依据选中的排序方式进行排序
 
 -按照创建时间排序
 
-![Alt Text](./运行结果截图/拓展基本功能3.2.1png)
+![Alt Text](./运行结果截图/拓展附加功能3.2.1.png)
 
 -按照修改时间排序
 
-![Alt Text](./运行结果截图/拓展基本功能3.2.2png)
+![Alt Text](./运行结果截图/拓展附加功能3.2.2.png)
 
 -按照颜色排序
 
-![Alt Text](./运行结果截图/拓展基本功能3.2.3png)
+![Alt Text](./运行结果截图/拓展附加功能3.2.3.png)
